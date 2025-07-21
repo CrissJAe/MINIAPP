@@ -39,11 +39,13 @@ pip install -r requirements.txt
 ```
 3. Actualiza el archivo config.py y configura las variables de entorno
 
+```bash
 DB_NAME = "BASE_DE_DATOS"
 DB_USER = "NOMBRE_DE_USUARIO"
 DB_PASSWORD = "CONTRASEÑA"
 DB_HOST = "localhost"
 DB_PORT = "5432"
+```
 
 4. Configura postgres
 
