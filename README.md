@@ -37,7 +37,7 @@ cd MINIAPP
 ```bash
 pip install -r requirements.txt
 ```
-3. Actualiza el archivo config.py y configura las variables de entorno
+3. Renombra el archivo config.example.py a config.py y configura las variables de entorno
 
 ```bash
 DB_NAME = "BASE_DE_DATOS"
