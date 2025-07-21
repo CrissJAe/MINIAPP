@@ -15,21 +15,6 @@ Aplicación de consola escrita en Python que permite crear, leer, actualizar y e
 
 ---
 
-## 📁 Estructura del proyecto
-
-MINIAPP/
-├── src/
-│ ├── main.py
-│ ├── iu.py
-│ ├── BDD.py
-├── config/
-│ └── config.py
-├── requirements.txt
-├── setup.sql
-└── README.md
-
-
----
 
 ## ⚙️ Requisitos
 
