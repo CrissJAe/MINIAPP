@@ -1,4 +1,4 @@
-from BDD import crear_profesor, leer_profesores, rut_exists, actualizar_profesor, eliminar_profesor
+from BDD import crear_profesor, ejecutar_consulta, leer_profesores, rut_exists, actualizar_profesor, eliminar_profesor
 from validaciones import string, num, stringNum
 def menu():
     print("------------------------------------")
@@ -8,7 +8,10 @@ def menu():
     print("2. Leer Profesores")
     print("3. Actualizar Profesor")
     print("4. Eliminar Profesor")
-    print("5. Salir")
+    print("5. Ejecutar Consulta")
+    print("0. Salir")
+    print("------------------------------------")
+    print("------------------------------------")
     return input("Seleccione una opcion: ")
 
 def obtener_datos_profe():
@@ -79,6 +82,8 @@ def main_iu(connect):
                 else:
                     print("\nEl RUT ingresado no existe en la base de datos. Intente nuevamente.\n")
         elif opcion == '5':
+            ejecutar_consulta(connect)
+        elif opcion == '0':
             print("Saliendo de la aplicación.")
             break
         else:
