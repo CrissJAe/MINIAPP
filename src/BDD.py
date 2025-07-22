@@ -35,6 +35,67 @@ def crear_tabla_profesor(connect):
     connect.commit()
     cursor.close()
     print("\nTabla 'profesor' creada correctamente\n.")
+
+def crear_tablas_consulta(connect):
+    cursor = connect.cursor()
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS curso (
+            codigo INTEGER PRIMARY KEY,
+            año INTEGER
+        );
+    """)
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS alumno (
+            RUT INTEGER PRIMARY KEY,
+            nombres VARCHAR(100),
+            apellido_paterno VARCHAR(100),
+            apellido_materno VARCHAR(100),
+            fecha_nacimiento DATE,
+            direccion VARCHAR(200),
+            ciudad VARCHAR(100),
+            codigo_curso INTEGER,
+            FOREIGN KEY (codigo_curso) REFERENCES curso(codigo)
+        );
+    """)
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS apoderado (
+            RUT INTEGER PRIMARY KEY,
+            nombres VARCHAR(100),
+            apellido_paterno VARCHAR(100),
+            apellido_materno VARCHAR(100),
+            direccion VARCHAR(200),
+            ciudad VARCHAR(100)
+        );
+    """)
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS representa (
+            rut_alumno INTEGER,
+            rut_apoderado INTEGER,
+            fecha_inicio DATE,
+            fecha_termino DATE,
+            PRIMARY KEY (rut_alumno, rut_apoderado),
+            FOREIGN KEY (rut_alumno) REFERENCES alumno(RUT),
+            FOREIGN KEY (rut_apoderado) REFERENCES apoderado(RUT)
+        );
+    """)
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS esjefe (
+            codigo_curso INTEGER,
+            rut_profesor_jefe INTEGER,
+            PRIMARY KEY (codigo_curso, rut_profesor_jefe),
+            FOREIGN KEY (codigo_curso) REFERENCES curso(codigo),
+            FOREIGN KEY (rut_profesor_jefe) REFERENCES profesor(RUT)
+        );
+    """)
+
+    connect.commit()
+    cursor.close()
+    print("\nTablas para consulta creadas correctamente.\n")
    
 
 
@@ -82,3 +143,26 @@ def eliminar_profesor(connect,rut):
     connect.commit()
     cursor.close()
     print("\nProfesor eliminado exitosamente\n")
+
+def ejecutar_consulta(connect):
+    cursor = connect.cursor()
+    try:
+        cursor.execute("""
+            SELECT a.nombres, c.codigo, p.nombres, p.apellido_paterno, ap.nombres
+            FROM alumno a
+            JOIN representa r ON a.rut = r.rut_alumno
+            JOIN apoderado ap ON r.rut_apoderado = ap.rut
+            JOIN curso c ON a.codigo_curso = c.codigo
+            JOIN esjefe ej ON c.codigo = ej.codigo_curso
+            JOIN profesor p ON ej.rut_profesor_jefe = p.rut
+            WHERE c.año = 2025;
+        """)
+        consulta = cursor.fetchall()
+        print("\nResultado de la consulta:\n")
+        for fila in consulta:
+            print(fila)
+            print("\n")
+    except Exception as error:
+        print(f"\nError al ejecutar la consulta: {error}\n")
+    finally:
+        cursor.close()
