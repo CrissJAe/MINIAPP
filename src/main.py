@@ -1,4 +1,4 @@
-from BDD import connect_db, crear_tabla_profesor
+from BDD import connect_db, crear_tabla_profesor, crear_tablas_consulta
 from iu import main_iu
 
 def main():
@@ -8,6 +8,7 @@ def main():
         return
     
     crear_tabla_profesor(connect)
+    crear_tablas_consulta(connect)
 
     try:
         main_iu(connect)
