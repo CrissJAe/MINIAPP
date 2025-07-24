@@ -50,8 +50,17 @@ def main_iu(connect):
         opcion = menu()
 
         if opcion == '1':
-            datos = obtener_datos_profe()
-            crear_profesor(connect, *datos)
+            while True:
+                rut = obtener_rut()
+                if not rut_exists(connect, rut):
+                    print("\n--------------------------------------------------------------------------")
+                    print("Rut No encontrado en la base de datos. Continue la insercion de datos:")
+                    print("----------------------------------------------------------------------------\n")
+                    datos = obtener_datos_profe()
+                    crear_profesor(connect, *datos)
+                    break
+                else:
+                    print("\nEl RUT ingresado ya existe. Intente con otro.\n")
         elif opcion == '2':
             profesores = leer_profesores(connect)
             if not profesores:
