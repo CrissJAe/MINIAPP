@@ -34,7 +34,7 @@ def crear_tabla_profesor(connect):
     """)
     connect.commit()
     cursor.close()
-    print("\nTabla 'profesor' creada correctamente\n.")
+    print("\nTabla 'profesor' creada correctamente.\n")
 
 def crear_tablas_consulta(connect):
     cursor = connect.cursor()
@@ -143,6 +143,68 @@ def eliminar_profesor(connect,rut):
     connect.commit()
     cursor.close()
     print("\nProfesor eliminado exitosamente\n")
+
+def insercion_datos(connect):
+    cursor = connect.cursor()
+    try:
+        cursor.execute("""
+            INSERT INTO profesor (RUT, nombres, apellido_paterno, apellido_materno, direccion, ciudad) VALUES
+            (12435678, 'Florencia Luciana', 'Sanchez', 'Vergara', 'Av collao 5463', 'Concepcion'),
+            (19224985, 'Sebastian', 'Espinoza', 'Gonzalez', 'Paicavi 4090', 'Concepcion'),
+            (20432109, 'Ana Paola', 'Lopez', 'Martinez', 'Av Ohiggins 3009', 'Santiago');
+        """)
+
+        cursor.execute("""
+            INSERT INTO curso (codigo, año) VALUES
+            (101, 2024),
+            (102, 2025),
+            (103, 2025);
+        """)
+        
+        cursor.execute("""
+            INSERT INTO alumno (RUT, nombres, apellido_paterno, apellido_materno, fecha_nacimiento, direccion, ciudad, codigo_curso) VALUES
+            (21233897, 'Juan', 'Perez', 'Gomez', '2000-01-01', 'Av collao 123', 'Santiago', 101),
+            (22189098, 'Ana', 'Lopez', 'Martinez', '2001-02-02', 'Av siempre viva 456', 'Concepcion', 102),
+            (21890001, 'Martin Arnoldo', 'Elgueda', 'Pulido', '2005-04-13', 'Calle agustin 123', 'Concepcion', 103),
+            (21681388, 'Cristopher Andres', 'Jimenez', 'Aedo', '2004-09-30', 'Los queules 870', 'Concepcion', 103);
+        """)
+        
+        cursor.execute("""
+            INSERT INTO apoderado (RUT, nombres, apellido_paterno, apellido_materno, direccion, ciudad) VALUES
+            (15678654, 'Pedro', 'Martinez', 'Lopez', 'Av collao 123', 'Santiago'),
+            (15897653, 'Laura', 'Sanchez', 'Perez', 'Av siempre viva 456', 'Concepcion'),
+            (16789089, 'Maria', 'Garcia', 'Hernandez', 'Calle agustin 123', 'Concepcion'),          
+            (13378765, 'Carlos', 'Ramirez', 'Fernandez', 'Los queules 870', 'Concepcion');     
+        """)
+        
+        cursor.execute("""
+            INSERT INTO representa (rut_alumno, rut_apoderado, fecha_inicio, fecha_termino) VALUES
+            (21233897, 15678654, '2023-03-01', NULL),
+            (22189098, 15897653, '2023-04-01', NULL),
+            (21890001, 16789089, '2023-05-01', NULL),
+            (21681388, 13378765, '2023-08-01', NULL);
+        """)
+        
+        cursor.execute("""
+            INSERT INTO esjefe (codigo_curso, rut_profesor_jefe) VALUES
+            (101, 20432109),
+            (102, 19224985),
+            (103, 12435678);
+        """)
+        
+        connect.commit()
+        print("\nDatos insertados correctamente.\n")
+    except Exception as error:
+        print(f"\nError al insertar datos: {error}\n")
+    finally:
+        cursor.close()
+
+def datos_existentes(connect):
+    cursor = connect.cursor()
+    cursor.execute("SELECT COUNT(*) FROM alumno;")
+    cantidad = cursor.fetchone()[0]
+    cursor.close()
+    return cantidad > 0    
 
 def ejecutar_consulta(connect):
     cursor = connect.cursor()
